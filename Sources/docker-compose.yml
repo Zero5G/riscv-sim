@@ -1,5 +1,4 @@
 name: riscvsim
-version: "2.3"
 services:
   web:
     image: majeris/riscv-sim-frontend:latest
@@ -25,13 +24,11 @@ services:
       - "traefik.http.routers.web-https.rule=Host(`${DOMAIN:-localhost}`) && PathPrefix(`/`)"
       - "traefik.http.routers.web-https.tls=true"
     logging:
-      driver: "local"
+      driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
     depends_on:
-      - simserver
-    links:
       - simserver
 
   reverse-proxy:
@@ -44,7 +41,7 @@ services:
       - "8080:8080" # dashboard
     volumes:
       - ./proxy/traefik.yaml:/etc/traefik/traefik.yaml
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock
       - "${CERTS_PATH:-./certs/}:/certs/"
 
   simserver:
@@ -68,7 +65,7 @@ services:
       - "traefik.http.routers.simserver-https.middlewares=api-stripprefix"
       - "traefik.http.routers.simserver-https.tls=true"
     logging:
-      driver: "local"
+      driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
