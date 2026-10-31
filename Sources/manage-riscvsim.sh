@@ -46,7 +46,7 @@ _arg_https_port="3121"
 _arg_certs_path="./certs/"
 _arg_domain="localhost"
 _arg_build_strategy="build"
-_arg_compose_command="docker compose"
+_arg_compose_command="podman compose"
 
 
 print_help()
@@ -242,7 +242,7 @@ validate_build_strategy() {
 
 # Validate docker compose command
 validate_docker_compose() {
-    if [[ "$1" != "docker compose" && "$1" != "docker-compose" ]]; then
+    if [[ "$1" != "podman compose" && "$1" != "podman-compose" ]]; then
         error "Docker compose command must be either 'docker compose' or 'docker-compose'"
     fi
 }
